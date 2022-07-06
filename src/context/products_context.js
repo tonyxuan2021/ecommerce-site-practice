@@ -36,15 +36,20 @@ export const ProductsProvider = ({ children }) => {
 
   const fetchProducts = (url) => {
     dispatch({ type: GET_PRODUCTS_BEGIN });
-    axios.get(url).then((response)=> {
-      const products = response.data
-      dispatch({type:GET_PRODUCTS_SUCCESS, payload: products})
-    })
+    axios
+      .get(url)
+      .then((response) => {
+        const products = response.data;
+        dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products });
+      })
+      .catch((error) => {
+        dispatch({ type: GET_PRODUCTS_ERROR });
+      });
   };
 
   useEffect(() => {
-    fetchProducts(url);
-  },[]);
+    fetchProducts(`${url}`);
+  }, []);
 
   return (
     <ProductsContext.Provider value={{ ...state, openSidebar, closeSidebar }}>
